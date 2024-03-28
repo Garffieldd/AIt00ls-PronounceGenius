@@ -13,18 +13,18 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
-@csrf_exempt
-class LoadInputDataViewSet(viewsets.ViewSet):
-    parser_classes = (MultiPartParser,)
 
-    @action(detail=False, methods=['post'])
-    @login_required
-    def load_input_data(self, request):
-        print(request.data)  # Aquí puedes procesar el archivo de audio
-        return Response(status=status.HTTP_201_CREATED)
+
+class LoadInputDataView(APIView):
+    parser_classes = (MultiPartParser,)
+    
+    @csrf_exempt
+    def post(self, request, *args, **kwargs):
+        print("llegooooo",request.data)  # Aquí puedes procesar el archivo de audio
+        return Response({'message': 'Archivo recibido correctamente'}, status=status.HTTP_201_CREATED)
     
     
-    
+
 class UserAudioInfoViewSet(viewsets.ModelViewSet):
     queryset = UserAudioInfo.objects.all()
     serializer_class = UserAudioInfoSerializer
