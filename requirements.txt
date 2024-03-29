@@ -6,3 +6,5 @@ sqlparse==0.4.4
 tzdata==2024.1
 pydub==0.25.1
 SpeechRecognition==3.10.2
+soundfile==0.12.1
+numpy==1.26.4
