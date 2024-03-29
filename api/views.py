@@ -13,17 +13,68 @@ from django.views.decorators.csrf import csrf_exempt
 import random
 import json
 from django.http import JsonResponse
+from django.conf import settings
+from pydub import AudioSegment
+import speech_recognition as sr
+import os
+import soundfile as sf
+
 # Create your views here.
 
 
 
 class LoadInputDataView(APIView):
     parser_classes = (MultiPartParser,)
-    
-    @csrf_exempt
+
     def post(self, request, *args, **kwargs):
-        print("llegooooo",request.data)  # Aquí puedes procesar el archivo de audio
-        return Response({'message': 'Archivo recibido correctamente'}, status=status.HTTP_201_CREATED)
+        if 'audio' not in request.FILES:
+            print("No llego")
+            return Response({'error': 'No se proporcionó ningún archivo de audio'}, status=status.HTTP_400_BAD_REQUEST)
+
+        audio_file = request.FILES['audio']
+        word = request.data.get('word', '').strip()
+        print("Llego")
+
+        # Verificar la extensión del archivo
+        if not audio_file.name.endswith('.mp3'):
+            print("no es")
+            return Response({'error': 'El archivo debe tener una extensión .mp3'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Convertir MP3 a WAV
+        print("si es")
+        with sf.SoundFile(audio_file) as mp3_audio:
+            wav_path = os.path.join(settings.MEDIA_ROOT, 'audio.wav')
+            sf.write(wav_path, mp3_audio.read(), mp3_audio.samplerate, format='WAV')
+            print("1")
+
+        # Reconocimiento de voz
+        recognizer = sr.Recognizer()
+        print("2")
+        with sr.AudioFile(wav_path) as source:
+            audio_data = recognizer.record(source)
+            print("3")
+
+        try:
+            # Reconocer texto
+            print("4")
+            recognized_text = recognizer.recognize_google(audio_data, language="en-US")
+            
+            print(recognized_text)
+             # Comparar la palabra reconocida con la proporcionada
+            if recognized_text.strip() == word:
+                return Response({'status': 'correcto', 'text': recognized_text}, status=status.HTTP_200_OK)
+            else:
+                return Response({'status': 'incorrecto', 'text': recognized_text}, status=status.HTTP_200_OK)
+
+        except sr.UnknownValueError:
+            print("5")
+            return Response({'error': 'No se pudo reconocer el texto del audio'}, status=status.HTTP_400_BAD_REQUEST)
+        except sr.RequestError:
+            print("6")
+            return Response({'error': 'Error en la conexión con el servicio de reconocimiento de voz'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        finally:
+            # Eliminar el archivo WAV después de su uso
+            os.remove(wav_path)
     
     
 
