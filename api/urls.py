@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from api.views import UserAudioInfoViewSet, LoadInputDataView
+from api.views import UserAudioInfoViewSet, LoadInputDataView, random_word
 
 # Creamos un enrutador
 router = DefaultRouter()
@@ -15,4 +15,5 @@ urlpatterns = [
     path('', include(router.urls)),
     # Agregamos la URL para la vista LoadInputDataView
     path(r'audio/', LoadInputDataView.as_view(), name='audio'),
+    path('random_word/', random_word, name='random_word'),
 ]
