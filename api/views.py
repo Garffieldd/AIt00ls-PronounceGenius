@@ -36,21 +36,21 @@ class LoadInputDataView(APIView):
         word = request.data.get('word', '').strip()
         correo = request.data.get('correo')
         posible_nueva_racha = int(request.data.get('racha'))
-        print("Llego")
+        
 
 
         # Reconocimiento de voz
         recognizer = sr.Recognizer()
-        print("1")
+        
         with sr.AudioFile(audio_file) as source:
             audio_data = recognizer.record(source)
-        print("2")    
+        
 
         try:
             # Reconocer texto
-            print("3")
-            recognized_text = recognizer.recognize_google(audio_data, language="en-US")
             
+            recognized_text = recognizer.recognize_google(audio_data, language="en-US")
+            print("Correo................",correo)
             print("Audio.................", recognized_text)
             print("Palabra...............", word)
             # Comparar la palabra reconocida con la proporcionada
@@ -59,6 +59,7 @@ class LoadInputDataView(APIView):
                 #correo = "sebastian_garfield18@ejemplo.com"
                 TRY = Trys.objects.create(word= recognized_text.strip(), pronunciation=word,correct=True)
                 UserAudioInfo_instance  = UserAudioInfo.objects.filter(email=correo).first()
+                print("como putas estoy llegando ","word:",recognized_text.strip(),"Pronunciation: ",word,TRY)
                 UserAudioInfo_instance.trys.add(TRY)
                 posible_nueva_racha += 1
                 #posible_nueva_racha = 5
@@ -66,10 +67,12 @@ class LoadInputDataView(APIView):
                     UserAudioInfo_instance.max_streak = posible_nueva_racha
                     UserAudioInfo_instance.save()
                 return Response({'status': 'correcto', 'text': recognized_text}, status=status.HTTP_200_OK)
+                
             else:
                 TRY = Trys.objects.create(word= recognized_text.strip(), pronunciation=word,correct=False)
                 #correo = "sebastian_garfield18@ejemplo.com"
                 UserAudioInfo_instance  = UserAudioInfo.objects.filter(email=correo).first()
+                print("como putas estoy llegando ","word:",recognized_text.strip(),"Pronunciation: ",word,TRY)
                 UserAudioInfo_instance.trys.add(TRY)
                 #posible_nueva_racha = 5
                 if UserAudioInfo_instance.max_streak < posible_nueva_racha:
