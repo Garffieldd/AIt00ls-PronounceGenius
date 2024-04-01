@@ -70,6 +70,7 @@ class LoadInputDataView(APIView):
                 TRY = Trys.objects.create(word= recognized_text.strip(), pronunciation=word,correct=True)
                 UserAudioInfo_instance  = UserAudioInfo.objects.filter(email=correo).first()
                 UserAudioInfo_instance.trys.add(TRY)
+                posible_nueva_racha += 1
                 #posible_nueva_racha = 5
                 if UserAudioInfo_instance.max_streak < posible_nueva_racha:
                     UserAudioInfo_instance.max_streak = posible_nueva_racha
