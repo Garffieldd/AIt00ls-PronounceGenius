@@ -39,27 +39,27 @@ class LoadInputDataView(APIView):
         print("Llego")
 
         # Verificar la extensión del archivo
-        if not audio_file.name.endswith('.mp3'):
-            print("no es")
-            return Response({'error': 'El archivo debe tener una extensión .mp3'}, status=status.HTTP_400_BAD_REQUEST)
+        if not audio_file.name.endswith('.wav'):
+            print("no es wav")
+            return Response({'error': 'El archivo debe tener una extensión .wav'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Convertir MP3 a WAV
-        print("si es")
-        with sf.SoundFile(audio_file) as mp3_audio:
-            wav_path = os.path.join(settings.MEDIA_ROOT, 'audio.wav')
-            sf.write(wav_path, mp3_audio.read(), mp3_audio.samplerate, format='WAV')
-            print("1")
+        # # Convertir MP3 a WAV
+        # print("si es")
+        # with sf.SoundFile(audio_file) as mp3_audio:
+        #     wav_path = os.path.join(settings.MEDIA_ROOT, 'audio.wav')
+        #     sf.write(wav_path, mp3_audio.read(), mp3_audio.samplerate, format='WAV')
+        #     print("1")
 
         # Reconocimiento de voz
         recognizer = sr.Recognizer()
-        print("2")
+        
         with sr.AudioFile(wav_path) as source:
             audio_data = recognizer.record(source)
-            print("3")
+            
 
         try:
             # Reconocer texto
-            print("4")
+            
             recognized_text = recognizer.recognize_google(audio_data, language="en-US")
             
             print(recognized_text)
