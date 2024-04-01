@@ -35,7 +35,7 @@ class LoadInputDataView(APIView):
         audio_file = request.FILES['audio']
         word = request.data.get('word', '').strip()
         correo = request.data.get('correo')
-        posible_nueva_racha = request.data.get('racha')
+        posible_nueva_racha = int(request.data.get('racha'))
         print("Llego")
 
         # Verificar la extensión del archivo
