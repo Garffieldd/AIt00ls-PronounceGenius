@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-#vdj)_)9+k^p2nx8mq=xv3(kmvma@!#u9_*5lc^s(34)6et#_(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'pic-text-backend.vercel.app',
+    'ait00ls-pronouncegenius.onrender.com'
+]
 
 
 # Application definition
@@ -129,4 +132,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "https://pic-text-backend.vercel.app",
     "https://ait00ls-pronouncegenius.onrender.com"
+    
 ]
