@@ -27,7 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'pic-text-backend.vercel.app',
-    'ait00ls-pronouncegenius.onrender.com'
+    'ait00ls-pronouncegenius.onrender.com',
+    'localhost'
 ]
 
 
