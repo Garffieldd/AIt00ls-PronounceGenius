@@ -127,5 +127,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    "*",
+    "https://pic-text-backend.vercel.app",
+    "ait00ls-pronouncegenius.onrender.com"
 ]
