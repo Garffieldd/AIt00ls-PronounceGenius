@@ -132,6 +132,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
     "https://pic-text-backend.vercel.app",
-    "https://ait00ls-pronouncegenius.onrender.com"
-    
+    "https://ait00ls-pronouncegenius.onrender.com",
+    "https://main--aait00ls.netlify.app"
 ]
