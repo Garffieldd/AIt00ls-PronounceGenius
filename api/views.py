@@ -215,3 +215,9 @@ def obtener_todos_los_datos(request):
         return JsonResponse({'datos_usuarios': datos_usuarios})
     else:
         return JsonResponse({'error': 'Método no permitido'}, status=405)
+    
+    
+    
+    
+def Home(request):
+    return HttpResponse("Hola mundo")
